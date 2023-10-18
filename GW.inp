@@ -1,37 +1,26 @@
 &GLOBAL
   PROJECT  MoS2
-  PRINT_LEVEL MEDIUM
   RUN_TYPE ENERGY
-  &TIMINGS
-     THRESHOLD 0.0001
-  &END
-!  TRACE
 &END GLOBAL
 &FORCE_EVAL
   METHOD Quickstep
   &DFT
-    BASIS_SET_FILE_NAME  /scratch/hpc-prf-eprop2d/eprop2d1_Jan/08_develop_new_GW/08_MoS2/45_for_tutorial/BASIS_PERIODIC_GW
+    BASIS_SET_FILE_NAME  BASIS_PERIODIC_GW
+    POTENTIAL_FILE_NAME  GTH_SOC_POTENTIALS
     SORT_BASIS EXP
-    POTENTIAL_FILE_NAME  /pc2/groups/hpc-prf-eprop2d/eprop2d1_Jan/02_compile_CP2K/20_CP2K_kp_extrapol_only_first_i_omega/cp2k/data/GTH_SOC_POTENTIALS
-    CHARGE 0
     &MGRID
       CUTOFF  500
       REL_CUTOFF  100
     &END MGRID
     &QS
       METHOD GPW
-      EPS_DEFAULT 1.0E-40
-      EPS_PGF_ORB 1.0E-40
+      EPS_DEFAULT 1.0E-12
+      EPS_PGF_ORB 1.0E-12
     &END QS
     &SCF
       SCF_GUESS RESTART
       EPS_SCF 1.0E-9
       MAX_SCF 100
-      &PRINT
-        &RESTART ON
-        &END
-      &END
-      ADDED_MOS -1
       &MIXING
           METHOD BROYDEN_MIXING
           ALPHA 0.1
@@ -46,18 +35,15 @@
   &END DFT
   &PROPERTIES
     &BANDSTRUCTURE
-      &BANDSTRUCTURE_PATH
-        SPECIAL_POINT Gamma 0.0   0.0   0.0
-        SPECIAL_POINT M     0.5   0.0   0.0
-        SPECIAL_POINT K     0.333 0.333 0.0
-        SPECIAL_POINT Gamma 0.0   0.0   0.0
-        NPOINTS 10
+      &DOS
+        KPOINTS 2 2 1
       &END
       &GW
+        ! for details on parameters, please consult 
+        ! manual.cp2k.org/trunk/CP2K_INPUT/FORCE_EVAL/PROPERTIES/BANDSTRUCTURE/GW.html
         NUM_TIME_FREQ_POINTS         10
         MEMORY_PER_PROC               8
         EPS_FILTER               1.0E-6
-        GROUP_SIZE_TENSOR          1024
       &END
       &SOC
       &END
@@ -68,6 +54,8 @@
       ABC                 3.15 3.15 15.0
       ALPHA_BETA_GAMMA    90 90 120
         PERIODIC XY
+        ! the calculation is on a 9x9 supercell with 243 and 
+        ! the band structure will be computed by backfolding
         MULTIPLE_UNIT_CELL 9 9 1
     &END CELL
     &TOPOLOGY
@@ -99,9 +87,9 @@
     &END KIND
 
     &COORD
-Mo         0.00000        1.81865        3.07500
-S          0.00000        3.63731        1.48830
-S          0.00000        3.63731        4.66170
+        Mo     0.00000    1.81865    3.07500
+        S      0.00000    3.63731    1.48830
+        S      0.00000    3.63731    4.66170
     &END COORD
   &END SUBSYS
 &END FORCE_EVAL
