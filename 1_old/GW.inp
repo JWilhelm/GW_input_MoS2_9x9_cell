@@ -5,8 +5,8 @@
 &FORCE_EVAL
   METHOD Quickstep
   &DFT
-    BASIS_SET_FILE_NAME  /pc2/groups/hpc-prf-eprop2d/eprop2d1_Jan/02_compile_CP2K/40_for_committing/cp2k/data/BASIS_PERIODIC_GW
-    POTENTIAL_FILE_NAME  /pc2/groups/hpc-prf-eprop2d/eprop2d1_Jan/02_compile_CP2K/40_for_committing/cp2k/data/GTH_SOC_POTENTIALS
+    BASIS_SET_FILE_NAME  BASIS_PERIODIC_GW
+    POTENTIAL_FILE_NAME  GTH_SOC_POTENTIALS
     SORT_BASIS EXP
     &MGRID
       CUTOFF  500
